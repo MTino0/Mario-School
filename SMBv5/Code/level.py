@@ -25,10 +25,6 @@ class Level:
         blocks_layout = import_csv_layout(level_data['blocks'])
         self.blocks_sprites = self.create_tile_group(blocks_layout, 'blocks')
         
-        # question_block
-        question_block_layout = import_csv_layout(level_data['question_block'])
-        self.question_block_sprites = self.create_tile_group(question_block_layout, 'question_block')
-        
         # background
         background_layout = import_csv_layout(level_data['background'])
         self.background_sprites = self.create_tile_group(background_layout, 'background')
@@ -55,37 +51,32 @@ class Level:
                     y = row_index * tile_size
                     
                     if type == 'terrain':
-                        terrain_tile_list = import_cut_graphics('U:/2023/SDD/Python/Code-Mario-main/SMBv5/Graphics/terrain/terrain_tiles.png')
+                        terrain_tile_list = import_cut_graphics('C:/Pygame/SMBv4/Graphics/terrain/terrain_tiles.png')
                         tile_surface = terrain_tile_list[int(val)]
                         sprite = StaticTile(tile_size,x,y,tile_surface)
                         
                     if type == 'blocks':
-                        question_block_tile_list = import_cut_graphics('U:/2023/SDD/Python/Code-Mario-main/SMBv5/Graphics/terrain/terrain_tiles.png')
+                        question_block_tile_list = import_cut_graphics('C:/Pygame/SMBv4/Graphics/terrain/terrain_tiles.png')
                         tile_surface = question_block_tile_list[int(val)]
                         sprite = StaticTile(tile_size, x, y, tile_surface)
                         
-                    if type == 'question_block':
-                        question_block_tile_list = import_cut_graphics('U:/2023/SDD/Python/Code-Mario-main/SMBv5/Graphics/terrain/terrain_tiles.png')
-                        tile_surface = question_block_tile_list[int(val)]
-                        sprite = AnimatedTile(tile_size, x, y, 'U:/2023/SDD/Python/Code-Mario-main/SMBv5/Graphics/animation/question_block') # Animate Question Block
-                        
                     if type == 'house':
-                        house_tile_list = import_cut_graphics('CU:/2023/SDD/Python/Code-Mario-main/SMBv5/Graphics/house/House.png')
+                        house_tile_list = import_cut_graphics('C:/Pygame/SMBv4/Graphics/house/House.png')
                         tile_surface = house_tile_list[int(val)]
                         sprite = StaticTile(tile_size,x,y,tile_surface)
                         
                     if type == 'background':
-                        background_tile_list = import_cut_graphics('U:/2023/SDD/Python/Code-Mario-main/SMBv5/Graphics/background/background.png')
+                        background_tile_list = import_cut_graphics('C:/Pygame/SMBv4/Graphics/background/background.png')
                         tile_surface = background_tile_list[int(val)]
                         sprite = StaticTile(tile_size,x,y,tile_surface)
                         
                     if type == 'flag':
-                        flag_tile_list = import_cut_graphics('U:/2023/SDD/Python/Code-Mario-main/SMBv5/Graphics/flag/Flag.png')
+                        flag_tile_list = import_cut_graphics('C:/Pygame/SMBv4/Graphics/flag/Flag.png')
                         tile_surface = flag_tile_list[int(val)]
                         sprite = StaticTile(tile_size,x,y,tile_surface)
                         
                     if type == 'flag_pole':
-                        flag_pole_tile_list = import_cut_graphics('U:/2023/SDD/Python/Code-Mario-main/SMBv5/Graphics/flag/flag.png')
+                        flag_pole_tile_list = import_cut_graphics('C:/Pygame/SMBv4/Graphics/flag/flag.png')
                         tile_surface = flag_pole_tile_list[int(val)]
                         sprite = StaticTile(tile_size,x,y,tile_surface)
                         
@@ -102,7 +93,7 @@ class Level:
                     sprite = Player((x,y))
                     self.player.add(sprite)
                 if val == '1':
-                    spawn_surface = pygame.image.load('U:/2023/SDD/Python/Code-Mario-main/SMBv5/Graphics/player/player.png').convert_alpha()
+                    spawn_surface = pygame.image.load('C:/Pygame/SMBv4/Graphics/player/player.png').convert_alpha()
                     sprite = StaticTile(tile_size,x,y,spawn_surface)
                     self.goal.add(sprite)
        
@@ -110,7 +101,7 @@ class Level:
         player = self.player.sprite    
         player.rect.x += player.direction.x * player.speed
         
-        collidable_sprites = self.terrain_sprites.sprites() + self.blocks_sprites.sprites() + self.question_block_sprites.sprites()
+        collidable_sprites = self.terrain_sprites.sprites() + self.blocks_sprites.sprites()
         for sprite in collidable_sprites:
             if sprite.rect.colliderect(player.rect):
                 if player.direction.x < 0:
@@ -121,7 +112,7 @@ class Level:
     def vertical_movement_collision(self): # Collision with top and bottom of sprites
         player = self.player.sprite
         player.apply_gravity()
-        collidable_sprites = self.terrain_sprites.sprites() + self.blocks_sprites.sprites() + self.question_block_sprites.sprites()
+        collidable_sprites = self.terrain_sprites.sprites() + self.blocks_sprites.sprites()
         for sprite in collidable_sprites:
             if sprite.rect.colliderect(player.rect):
                 if player.direction.y > 0:
@@ -175,11 +166,7 @@ class Level:
         # Update and draw block sprites
         self.blocks_sprites.update(self.world_shift)
         self.blocks_sprites.draw(self.display_surface)
-
-        # Update and draw question_block sprites
-        self.question_block_sprites.update(self.world_shift)
-        self.question_block_sprites.draw(self.display_surface)
-
+        
         # Update and draw background sprites
         self.background_sprites.update(self.world_shift)
         self.background_sprites.draw(self.display_surface)
